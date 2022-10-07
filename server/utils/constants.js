@@ -4,7 +4,10 @@ module.exports = {
     KEYLENGTH: 34567,
     ITERATION: 8000,
     DIGEST: 'sha512',
-    ENCODE: 'hex'
+    ENCODE: 'hex',
+    PENDING: 'PENDING',
+    ACCEPTED: 'ACCEPTED',
+    DECLINED: 'DECLINED'
   };
 
   // keyLength
