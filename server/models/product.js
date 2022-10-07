@@ -91,3 +91,5 @@ const ProductSchema = new Schema(
         this.rating = Math.ceil(rating)
 
   }
+
+  module.exports = mongoose.model('Product', ProductSchema)
