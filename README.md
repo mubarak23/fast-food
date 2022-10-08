@@ -1,6 +1,6 @@
 
 <h4 align="center"><a href="" 
-target="_blank">Yum-food,</a> is an online food ordering application .</h4>
+target="_blank">Fast Food,</a> is an online food ordering application .</h4>
 
 
 ## Key Features
