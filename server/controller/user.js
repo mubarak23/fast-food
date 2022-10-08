@@ -16,9 +16,9 @@ const log = new Logger('User controller')
  * @param  {Express.Response} res
  * @param  {function} next
  */
-const registerUser = async function (req, res, next) {
+const userRegister = async function (req, res, next) {
     const { body } = req
-    log.info('Register', body)
+    log.info('Register a User', body)
     if(!('name' in body) || !('email' in body) && ('password' in body)){
         res.statusCode(422)
         return next(
@@ -58,3 +58,68 @@ const registerUser = async function (req, res, next) {
     const data = formatUser(user, token)
     return res.json({ data })
 }
+
+/**
+ * @param  {Express.Request} req
+ * @param  {Express.Response} res
+ * @param  {function} next
+ */
+
+const userLogin = async function (req, res, next) {
+    const { body } = req
+    log.info('User Login ', body)
+    if(!('email' in body) || !('password' in body)){
+        res.statusCode(422)
+        return next(
+            new CustomException(
+              ErrorMessage.REQUIRED_EMAIL_PASSWORD,
+              ErrorCodes.REQUIRED_EMAIL_PASSWORD
+            )
+          );
+    }
+    const isValid = validateBody(["email", "password"], body, res, next);
+    if (!isValid) return false;
+    
+    return User.findOne({ email })
+    .then((user) => {
+        if(!(user != null && user.email != null)){
+            res.statusCode(422)
+            return next(
+                new CustomException(
+                  ErrorMessage.ACCOUNT_NOT_FOUND,
+                  ErrorCodes.ACCOUNT_NOT_FOUND
+                )
+              );
+        }
+      if(!user.validatePassword(password)){
+        res.statusCode(422)
+        return next(
+            new CustomException(
+              ErrorMessage.INCORRECT_PASSWORD,
+              ErrorCodes.INCORRECT_PASSWORD
+            )
+          );
+      }  
+
+      if(!user.isActive){
+        res.statusCode(422)
+        return next(
+            new CustomException(
+              ErrorMessage.ACCOUNT_DEACTIVATED,
+              ErrorCodes.ACCOUNT_DEACTIVATED
+            )
+          );
+      }
+      const token = Jwt.signToken(tokenPayload(user))
+      const data = formatUser(user, token)
+      return res.json({ data })
+    }).catch((err) => {
+        log.info(`error ${err}`);
+        return next(
+          new CustomException(ErrorMessage.UNKNOWN, ErrorCodes.UNKNOWN)
+        );
+      });
+
+}
+
+module.exports = { userRegister, userLogin}
