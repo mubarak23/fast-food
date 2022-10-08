@@ -17,5 +17,5 @@ target="_blank">Fast Food,</a> is an online food ordering application .</h4>
   - Add review for a menu
   - Filter menu
 - Admin
- - Add Food Item
- - Analytics for order Data
+  - Add Food Item
+  - Analytics for order Data
