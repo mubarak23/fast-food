@@ -11,7 +11,6 @@ exports.DB_OPTIONS = {
   useFindAndModify: false,
   autoIndex: false,
   auto_reconnect: true,
- //  auth: { authSource: "admin" },
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
   // reconnectTries: 10,
@@ -25,7 +24,7 @@ exports.DB_OPTIONS = {
 exports.DB_NAME = process.env.DB_NAME;
 exports.API_KEY = process.env.API_KEY;
 
-// Cloudinary
+// Cloudinary ENV Variables
 exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 exports.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
