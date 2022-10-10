@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
-const { Constants } = require('../utils/index')
+const {
+  Constants: { USER },
+} = require("../utils");
+
 
 const Schema = mongoose.Schema
 
@@ -14,7 +17,7 @@ const UserSchema = new Schema ({
       accountType: {
         type: String,
         default: USER,
-        enum: [Constants.USER, ],
+        enum: [USER],
       },
       imageUrl: String,
       name: {

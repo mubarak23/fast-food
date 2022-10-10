@@ -1,6 +1,6 @@
 const express = require('express')
 const {
-    Helper: { checkId, checkRating, checkComment, checkPayload, validateBody },
+    Helper,
     ErrorCodes,
     ErrorMessage,
     CustomException,
@@ -110,9 +110,9 @@ const {
     if(user &&
         rating &&
         comment &&
-        checkId(user) &&
-        checkRating(rating) &&
-        checkComment(comment)
+        Helper.checkId(user) &&
+        Helper.checkRating(rating) &&
+        Helper.checkComment(comment)
         ){
             return true
         }
@@ -152,7 +152,7 @@ const getAllProducts  = async function (req, res, next){
 
 const getProduct = async function (req, res, next){
     const { id } = req.params
-    if (!checkId(id)) {
+    if (!Helper.checkId(id)) {
         next(
           new CustomException(
             // eslint-disable-next-line new-cap
@@ -176,7 +176,7 @@ const getProduct = async function (req, res, next){
  * @param  {function} next
  */
  const addProduct = async function (req, res, next) {
-    if (checkPayload(req.user || {})) {
+    if (Helper.checkPayload(req.user || {})) {
       const { body } = req;
        log.info('new product data', body) 
       if (!("name" in body) || !("price" in body)) {
@@ -198,7 +198,7 @@ const getProduct = async function (req, res, next){
         );
       }
   
-      const isValid = validateBody(
+      const isValid = Helper.validateBody(
         ["name", "price", "description"],
         body,
         res,
@@ -250,14 +250,14 @@ const updateProduct = async function (req, res, next) {
       params: { id },
       body,
     } = req;
-    if (checkPayload(req.user || {}) && checkId(id)) {
+    if (Helper.checkPayload(req.user || {}) && Helper.checkId(id)) {
       sanitizeBody(body);
       const newData = [];
       if (body.name) newData.push("name");
       if (body.price) newData.push("price");
       if (body.description) newData.push("description");
   
-      const isValid = validateBody(newData, body, res, next);
+      const isValid = Helper.validateBody(newData, body, res, next);
       if (!isValid) return false;
       return Product.findByIdAndUpdate(id, body, { new: true })
         .then(async (product) => {
@@ -303,7 +303,7 @@ const updateProduct = async function (req, res, next) {
  */
 const deleteProduct = async function (req, res, next) {
     const { params } = req;
-    if (checkPayload(req.user || {}) && checkId(params.id)) {
+    if (Helper.checkPayload(req.user || {}) && Helper.checkId(params.id)) {
       return Product.findByIdAndRemove(params.id).then((product) => {
         if (product && product.public_id) {
           FileManager.deleteCloud(product.public_id || "");
@@ -332,7 +332,7 @@ const addReview = async function (req, res, next) {
       params: { id },
       body: { review },
     } = req;
-    if (checkPayload(req.user || {}) && checkId(id)) {
+    if (Helper.checkPayload(req.user || {}) && Helper.checkId(id)) {
       const reviewN = { ...review, user: req.user.id };
       const isValid = checkReview(reviewN, next);
       if (!isValid) return false;
@@ -369,7 +369,7 @@ const updateReview = async function (req, res, next) {
       params: { id },
       body: { review },
     } = req;
-    if (checkPayload(req.user || {}) && checkId(id)) {
+    if (Helper.checkPayload(req.user || {}) && Helper.checkId(id)) {
       const reviewN = { ...review, user: req.user.id };
       const isValid = checkReview(reviewN, next);
       if (!isValid) return false;
@@ -404,7 +404,7 @@ const deleteReview = async function (req, res, next) {
     const {
       params: { id },
     } = req;
-    if (checkPayload(req.user || {}) && checkId(id)) {
+    if (Helper.checkPayload(req.user || {}) && Helper.checkId(id)) {
       const product = await Product.findById(id);
       if (!product) return handleResult(product, res, next);
       try {

@@ -7,7 +7,8 @@ module.exports = {
     ENCODE: 'hex',
     PENDING: 'PENDING',
     ACCEPTED: 'ACCEPTED',
-    DECLINED: 'DECLINED'
+    DECLINED: 'DECLINED',
+    USER: 'USER'
   };
 
   // keyLength

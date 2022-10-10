@@ -5,7 +5,7 @@ const { uid } = require('uid')
 const config = require('../../config')
 const { Logger, CustomException, Storage: { PRODUCT } } = require('../utils')
 
-Logger.name('Push image and Media to cloudinary')
+// Logger.info('Push image and Media to cloudinary')
 
 
 cloudinary.config({

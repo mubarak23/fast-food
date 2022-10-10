@@ -1,8 +1,7 @@
 
-const mongoose = reqire('mongoose')
+const mongoose = require('mongoose')
 const { Schema } = mongoose
 const Product = require('./product')
-const { Constants } = require('../utils/index')
 
 const {
     Constants: { PENDING, ACCEPTED, DECLINED },
@@ -54,7 +53,7 @@ const OrderSchema = new Schema(
       status: {
         type: String,
         default: PENDING,
-        enum: [Constants.ACCEPTED, Constants.PENDING, Constants.DECLINED],
+        enum: [ACCEPTED, PENDING, DECLINED],
       },
     },
     {
@@ -103,4 +102,4 @@ const OrderSchema = new Schema(
     this.totalPrice = newShippingPrice
   }
 
-  module.exports = mongoose.Model('Order', OrderSchema)
+  module.exports = mongoose.model('Order', OrderSchema)
