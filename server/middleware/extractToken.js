@@ -3,7 +3,7 @@ const { ErrorMessage, ErrorCodes } = require("../utils");
 const { CustomException } = require("../utils");
 const config = require("../../config");
 
-const jwt = new JwtManager(config.SECRET);
+const jwt = new JwtManager('mubarak23pass123') //(config.SECRET);
 
 /**
  * Prevents requests from random sources

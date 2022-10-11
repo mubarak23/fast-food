@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const {
-  Constants: { USER },
+  Constants,
 } = require("../utils");
 
 
@@ -16,8 +16,8 @@ const UserSchema = new Schema ({
       salt: String,
       accountType: {
         type: String,
-        default: USER,
-        enum: [USER],
+        default: Constants.USER,
+        enum: [Constants.USER],
       },
       imageUrl: String,
       name: {

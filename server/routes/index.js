@@ -2,7 +2,7 @@ const express = require('express')
 
 const apiRouter = express.Router()
 const Middleware = require('../middleware')
-const { UserController } = require('../controller/index')
+const  UserController  = require('../controller/user')
 const productRouter = require('./product') 
 const orderRouter = require('./order')
 
@@ -13,6 +13,12 @@ apiRouter.post('/login', UserController.userLogin).post('/register', UserControl
 
 apiRouter.use('/product', productRouter)
 apiRouter.use('/order', orderRouter)
+
+apiRouter.use(Middleware.Four04Handler);
+// handle all unhandled error
+apiRouter.use(Middleware.ErrorHandler);
+
+
 
 
 module.exports = apiRouter;

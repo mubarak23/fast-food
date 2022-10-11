@@ -1,13 +1,13 @@
-import Express from 'express';
-import { CustomException, ErrorCode, ErrorMessage } from '../utils/index.js';
+const Express = require("express");
+const { CustomException, ErrorCodes, ErrorMessage } = require("../utils");
 
 /**
- * Handles 404 routes messages
+ * Handles sending message incase of a 404
  * @param  {Express.Request} req
  * @param  {Express.Response} res
  * @param  {function} next
  */
-export default (req, res, next) => {
-    res.status(404);
-    next(new CustomException(ErrorMessage.NOT_FOUND, ErrorCode.NOT_FOUND))
-}
+module.exports = (req, res, next) => {
+  res.status(404);
+  next(new CustomException(ErrorMessage.NOT_FOUND, ErrorCodes.NOT_FOUND));
+};

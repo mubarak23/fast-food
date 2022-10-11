@@ -4,6 +4,7 @@ module.exports = {
     ErrorMessage: require('./errorMessage'),
     ErrorCode: require('./errorCodes'),
     Constants: require('./constants'),
+    Helper: require('./helper'),
     Logger: require('./logger'),
     Db: require('./paginate'),
     Validator: require('./validator'),

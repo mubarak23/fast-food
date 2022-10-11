@@ -1,4 +1,4 @@
-const ErrorCodes = require("./errorCodes");
+const ErrorCode = require("./errorCodes");
 const ErrorMessage = require("./errorMessage");
 const CustomException = require("./customException");
 const Logger = require("./logger");
@@ -44,7 +44,7 @@ function checkComment(comment) {
         new CustomException(
           // eslint-disable-next-line new-cap
           ErrorMessage.INVALID_ORDER_ITEMS,
-          ErrorCodes.INVALID_ORDER_ITEMS
+          ErrorCode.INVALID_ORDER_ITEMS
         )
       );
       return false
@@ -75,7 +75,7 @@ function checkShippingData(shipping, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.INVALID_SHIPPING_DATA,
-        ErrorCodes.INVALID_SHIPPING_DATA
+        ErrorCode.INVALID_SHIPPING_DATA
       )
     );
     return false;
@@ -95,7 +95,7 @@ function checkStatus(status, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.INVALID_STATUS,
-        ErrorCodes.INVALID_STATUS
+        ErrorCode.INVALID_STATUS
       )
     );
     return false;
@@ -118,7 +118,7 @@ function checkPayload(user, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.EXPIRED_OR_INVALID_TOKEN,
-        ErrorCodes.EXPIRED_OR_INVALID_TOKEN
+        ErrorCode.EXPIRED_OR_INVALID_TOKEN
       )
     );
     return false;
@@ -173,7 +173,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_EMAIL,
-              ErrorCodes.INVALID_EMAIL
+              ErrorCode.INVALID_EMAIL
             )
           );
         }
@@ -190,7 +190,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_PASSWORD,
-              ErrorCodes.INVALID_PASSWORD
+              ErrorCode.INVALID_PASSWORD
             )
           );
         }
@@ -206,7 +206,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_NAME,
-              ErrorCodes.INVALID_NAME
+              ErrorCode.INVALID_NAME
             )
           );
         }
@@ -222,7 +222,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_PRICE,
-              ErrorCodes.INVALID_PRICE
+              ErrorCode.INVALID_PRICE
             )
           );
         }
@@ -239,7 +239,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_DESCRIPTION,
-              ErrorCodes.INVALID_DESCRIPTION
+              ErrorCode.INVALID_DESCRIPTION
             )
           );
         }
@@ -248,6 +248,7 @@ function tokenPayload(user) {
     }
   
     if (scope.includes("phone")) {
+      console.log(phone)
       if (!(phone && Validator.phone(phone))) {
         log.error("invalid phone number", {
           file: "helper.js validateBody(phone)",
@@ -257,7 +258,7 @@ function tokenPayload(user) {
           done(
             new CustomException(
               ErrorMessage.INVALID_PHONE,
-              ErrorCodes.INVALID_PHONE
+              ErrorCode.INVALID_PHONE
             )
           );
         }
