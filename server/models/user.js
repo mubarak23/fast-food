@@ -17,7 +17,7 @@ const UserSchema = new Schema ({
       accountType: {
         type: String,
         default: Constants.USER,
-        enum: [Constants.USER],
+        enum: [Constants.USER, Constants.ADMIN],
       },
       imageUrl: String,
       name: {
