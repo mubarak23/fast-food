@@ -1,13 +1,13 @@
 const express = require('express')
 const {
     Helper,
-    ErrorCodes,
+    ErrorCode,
     ErrorMessage,
     CustomException,
     Db: { paginate: Paginate },
     Logger,
   } = require("../utils");
-  const { Product } = require('../models/product')
+  const { Product } = require('../models')
   const { FileManager } = require('../service')
 
 
@@ -82,7 +82,7 @@ const {
     next(
       new CustomException(
         ErrorMessage.PRODUCT_NOT_FOUND,
-        ErrorCodes.PRODUCT_NOT_FOUND
+        ErrorCode.PRODUCT_NOT_FOUND
       )
     ); 
     }
@@ -120,7 +120,7 @@ const {
             new CustomException(
               // eslint-disable-next-line new-cap
               ErrorMessage.INVALID_REVIEWS,
-              ErrorCodes.INVALID_REVIEWS
+              ErrorCode.INVALID_REVIEWS
             )
           );
           return false;   
@@ -133,7 +133,9 @@ const {
  */
 const getAllProducts  = async function (req, res, next){
     const query = parseQuery(req.query)
-    const { page, prepage } = req.query
+   // const { page } = req.query
+    const perpage = 2
+    const page = 1
     Paginate(res, next, Product, {
         perPage: perpage,
         query,
@@ -157,7 +159,7 @@ const getProduct = async function (req, res, next){
           new CustomException(
             // eslint-disable-next-line new-cap
             ErrorMessage.PRODUCT_NOT_FOUND,
-            ErrorCodes.PRODUCT_NOT_FOUND
+            ErrorCode.PRODUCT_NOT_FOUND
           )
         );
         return;
@@ -178,13 +180,13 @@ const getProduct = async function (req, res, next){
  const addProduct = async function (req, res, next) {
     if (Helper.checkPayload(req.user || {})) {
       const { body } = req;
-       log.info('new product data', body) 
+       
       if (!("name" in body) || !("price" in body)) {
         res.status(422);
         return next(
           new CustomException(
             ErrorMessage.REQUIRED_NAME_PRICE,
-            ErrorCodes.REQUIRED_NAME_PRICE
+            ErrorCode.REQUIRED_NAME_PRICE
           )
         );
       }
@@ -193,7 +195,7 @@ const getProduct = async function (req, res, next){
         return next(
           new CustomException(
             ErrorMessage.REQUIRED_DESCRIPTION,
-            ErrorCodes.REQUIRED_DESCRIPTION
+            ErrorCode.REQUIRED_DESCRIPTION
           )
         );
       }
@@ -206,7 +208,7 @@ const getProduct = async function (req, res, next){
       );
       if (!isValid) return false;
   
-      log.info("passed validation");
+     //  log.info("passed validation");
       const { name, price, description } = body;
   
       const validProduct = new Product({
@@ -216,11 +218,11 @@ const getProduct = async function (req, res, next){
       });
   
       if (req.file !== undefined) {
-        log.info(req.file);
+       // log.info(req.file);
         if (!req.file.path) {
-          log.error("error saving image", {
-            file: "product.js add(image)",
-          });
+          // log.error("error saving image", {
+          //   file: "product.js add(image)",
+          // });
         } else {
           validProduct.image = req.file.path;
           validProduct.public_id = req.file.filename;
@@ -233,7 +235,7 @@ const getProduct = async function (req, res, next){
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };
@@ -262,11 +264,11 @@ const updateProduct = async function (req, res, next) {
       return Product.findByIdAndUpdate(id, body, { new: true })
         .then(async (product) => {
           if (req.file !== undefined) {
-            log.info(req.file);
+           // log.info(req.file);
             if (!req.file.path) {
-              log.error("error saving image", {
-                file: "product.js update(image)",
-              });
+              // log.error("error saving image", {
+              //   file: "product.js update(image)",
+              // });
             } else {
               // delete previous file
               if (product && product.public_id) {
@@ -276,7 +278,7 @@ const updateProduct = async function (req, res, next) {
                 product.image = req.file.path;
                 product.public_id = req.file.filename;
                 await product.save();
-                log.info("New file uploaded");
+                // log.info("New file uploaded");
               }
             }
           }
@@ -290,7 +292,7 @@ const updateProduct = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };
@@ -315,7 +317,7 @@ const deleteProduct = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };
@@ -334,15 +336,17 @@ const addReview = async function (req, res, next) {
     } = req;
     if (Helper.checkPayload(req.user || {}) && Helper.checkId(id)) {
       const reviewN = { ...review, user: req.user.id };
-      const isValid = checkReview(reviewN, next);
-      if (!isValid) return false;
+      
+     //  const isValid = checkReview(reviewN, next);
+      // if (!isValid) return false;
   
       const product = await Product.findById(id);
+      
       if (!product) return handleResult(product, res, next);
       try {
         await product.addReview(reviewN);
       } catch (err) {
-        log.info(err);
+       // log.info(err);
         return next({ error: err });
       }
       await product.save();
@@ -352,7 +356,7 @@ const addReview = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };
@@ -379,7 +383,7 @@ const updateReview = async function (req, res, next) {
       try {
         await product.editReview(reviewN);
       } catch (err) {
-        log.info(err);
+       // log.info(err);
         return next({ error: err });
       }
       await product.save();
@@ -389,7 +393,7 @@ const updateReview = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };
@@ -410,7 +414,7 @@ const deleteReview = async function (req, res, next) {
       try {
         await product.deleteReview(req.user.id);
       } catch (err) {
-        log.info(err);
+       // log.info(err);
         return next({ error: err });
       }
       await product.save();
@@ -420,7 +424,7 @@ const deleteReview = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.NO_PRIVILEGE,
-        ErrorCodes.NO_PRIVILEGE
+        ErrorCode.NO_PRIVILEGE
       )
     );
   };

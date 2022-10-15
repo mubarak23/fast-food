@@ -43,16 +43,16 @@ const ProductSchema = new Schema(
 
   // add product review functions
   ProductSchema.methods.addReview = function (review) {
-    if(this.reviews.some((e) => String(e.user) === String(review.user))){
-        throw new CustomException(
-            ErrorMessage.DUPLICATE_USER_REVIEW,
-            ErrorCodes.DUPLICATE_USER_REVIEW
-          );
-    }
-    this.reviews = [...this.reviews, review]
-    this.numReviews += 1
-    this.updateReview(this.reviews)
-  }
+    // if (this.reviews.some((e) => String(e.user) === String(review.user))) {
+    //   throw new CustomException(
+    //     ErrorMessage.DUPLICATE_USER_REVIEW,
+    //     ErrorCodes.DUPLICATE_USER_REVIEW
+    //   );
+    // }
+    this.reviews = [...this.reviews, review];
+    this.numReviews += 1;
+    this.updateReview(this.reviews);
+  };
 
   ProductSchema.methods.deleteReview = function (review) {
     if(this.reviews.some((e) => String(e.user) === String(review.user))){
@@ -76,12 +76,12 @@ const ProductSchema = new Schema(
     this.reviews = this.reviews.map((r) =>
       String(r.user) === String(review.user) ? review : r
     );
-    this.updatedRating(this.reviews);
+    this.updateReview(this.reviews);
   };
 
 
   ProductSchema.methods.updateReview = function (reviews) {
-        if(reviews.length < 0){
+        if(reviews.length < 1){
             this.rating = 0
             return
         }
