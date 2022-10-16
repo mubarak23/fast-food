@@ -7,7 +7,7 @@ ErrorMessage,
 CustomException } = require('../utils')
 let { Jwt } = require('../service')
 
-Jwt = new Jwt( process.env.SECRET)
+Jwt = new Jwt('mubarak23pass123') // process.env.SECRET
 
 const log = new Logger('User controller')
 

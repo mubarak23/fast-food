@@ -4,12 +4,12 @@ const {
   Helper,
   Db: { paginate: Paginate },
   Constants: { PENDING, ADMIN, USER },
-  ErrorCodes,
+  ErrorCode,
   ErrorMessage,
   CustomException,
   Logger,
 } = require("../utils");
-const { Order } = require("../models/order");
+const { Order } = require("../models");
 
 const log = new Logger("Order Controller");
 /**
@@ -85,7 +85,7 @@ const handleResult = function (order, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.ORDER_NOT_FOUND,
-        ErrorCodes.ORDER_NOT_FOUND
+        ErrorCode.ORDER_NOT_FOUND
       )
     );
   }
@@ -144,7 +144,7 @@ const get = async function (req, res, next) {
       new CustomException(
         // eslint-disable-next-line new-cap
         ErrorMessage.PRODUCT_NOT_FOUND,
-        ErrorCodes.PRODUCT_NOT_FOUND
+        ErrorCode.PRODUCT_NOT_FOUND
       )
     );
     return;
@@ -200,7 +200,7 @@ const post = async function (req, res, next) {
       return next(
         new CustomException(
           ErrorMessage.REQUIRED_ITEMS,
-          ErrorCodes.REQUIRED_ITEMS
+          ErrorCode.REQUIRED_ITEMS
         )
       );
     }
@@ -209,7 +209,7 @@ const post = async function (req, res, next) {
       return next(
         new CustomException(
           ErrorMessage.REQUIRED_SHIPPING_DATA,
-          ErrorCodes.REQUIRED_SHIPPING_DATA
+          ErrorCode.REQUIRED_SHIPPING_DATA
         )
       );
     }
@@ -217,16 +217,19 @@ const post = async function (req, res, next) {
     sanitizeBody(req.body);
 
     const { items, shippingData } = body;
+    console.log(items)
+    console.log(shippingData)
     const order = {
       shipping: shippingData,
       orderItems: items,
       user: req.user.id,
     };
     const isValid = checkOrder(order, next);
+    console.log(isValid)
     if (!isValid) return false;
 
     delete order.orderItems;
-    const validOrder = await new Order(order);
+    const validOrder = new Order(order);
 
     let error = null;
     await Promise.all(
@@ -249,7 +252,7 @@ const post = async function (req, res, next) {
     new CustomException(
       // eslint-disable-next-line new-cap
       ErrorMessage.NO_PRIVILEGE,
-      ErrorCodes.NO_PRIVILEGE
+      ErrorCode.NO_PRIVILEGE
     )
   );
 };
@@ -271,7 +274,7 @@ const update = async function (req, res, next) {
       return next(
         new CustomException(
           ErrorMessage.REQUIRED_ITEMS,
-          ErrorCodes.REQUIRED_ITEMS
+          ErrorCode.REQUIRED_ITEMS
         )
       );
     }
@@ -280,7 +283,7 @@ const update = async function (req, res, next) {
       return next(
         new CustomException(
           ErrorMessage.REQUIRED_SHIPPING_DATA,
-          ErrorCodes.REQUIRED_SHIPPING_DATA
+          ErrorCode.REQUIRED_SHIPPING_DATA
         )
       );
     }
@@ -306,7 +309,7 @@ const update = async function (req, res, next) {
         new CustomException(
           // eslint-disable-next-line new-cap
           `order has already been by ${validOrder.status} by admin`,
-          ErrorCodes.ORDER_HAS_BEEN_ACCEPTED_REJECTED
+          ErrorCode.ORDER_HAS_BEEN_ACCEPTED_REJECTED
         )
       );
     await Promise.all(
@@ -329,7 +332,7 @@ const update = async function (req, res, next) {
     new CustomException(
       // eslint-disable-next-line new-cap
       ErrorMessage.NO_PRIVILEGE,
-      ErrorCodes.NO_PRIVILEGE
+      ErrorCode.NO_PRIVILEGE
     )
   );
 };
@@ -363,7 +366,7 @@ const updateStatus = async function (req, res, next) {
     new CustomException(
       // eslint-disable-next-line new-cap
       ErrorMessage.NO_PRIVILEGE,
-      ErrorCodes.NO_PRIVILEGE
+      ErrorCode.NO_PRIVILEGE
     )
   );
 };
@@ -398,7 +401,7 @@ const deleteOrder = async function (req, res, next) {
     new CustomException(
       // eslint-disable-next-line new-cap
       ErrorMessage.NO_PRIVILEGE,
-      ErrorCodes.NO_PRIVILEGE
+      ErrorCode.NO_PRIVILEGE
     )
   );
 };

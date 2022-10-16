@@ -1,0 +1,16 @@
+[
+    {
+        "name": "mubarak",
+        "email": "mubarak@gmail.com",
+        "phone": "08037284634",
+        "password": "Password123#",
+        "accountType": "ADMIN"
+    },
+    {
+        "name": "demo",
+        "email": "mubarakDemo@gmail.com",
+        "phone": "08037284635",
+        "password": "Password246#",
+        "accountType": "USER"
+    }
+]
