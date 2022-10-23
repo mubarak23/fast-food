@@ -1,14 +1,14 @@
-import { configureStore, applyMiddleware, compose } from  "redux";
+import { createStore, applyMiddleware, compose } from  "redux";
 import {persistReducer, persistStore} from "redux-persist";
 import devToolsEnhancer from "remote-redux-devtools";
 import { createLogger } from "redux-logger";
 import thunk from "redux-thunk";
-import { persistConfig } from "./configureStore";
+import { persistConfig } from "./configureStore.js";
 import reducers from "./reducers";
 
 const persistantStore = persistReducer(persistConfig, reducers)
 
-export const store = configureStore(
+export const store = createStore(
     persistantStore, {},
     compose(
         applyMiddleware(createLogger(), thunk),
@@ -20,3 +20,4 @@ export const store = configureStore(
 )
 
 export const fastFoodStore = persistStore(store)
+

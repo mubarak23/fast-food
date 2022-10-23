@@ -1,17 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './containers/App';
-import reportWebVitals from './reportWebVitals';
+import { render } from "react-dom";
+import React from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react'
+import App from "./containers/App";
+import {store,fastFoodStore} from "./store";
+import ReduxToastr from 'react-redux-toastr'
+import './assets/styles.css';
+import ReactGA from 'react-ga';
+process.env.NODE_ENV === 'production' && ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_KEY);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={fastFoodStore}>
+      <App/>
+      <ReduxToastr
+      timeOut={4000}
+      newestOnTop={false}
+      preventDuplicates
+      position="top-right"
+      getState={(state) => state.toastr} // This is the default
+      transitionIn="fadeIn"
+      transitionOut="fadeOut"
+      progressBar
+      closeOnToastrClick/>
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
