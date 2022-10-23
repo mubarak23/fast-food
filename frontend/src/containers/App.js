@@ -1,35 +1,41 @@
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import { BrowserRouter, Route,Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Landing from "./Landing";
+import Register from './Register';
+import Login from './Login';
 import './App.css';
 import React from "react";
+import Navbar from '../components/Navbar';
+import { connect } from "react-redux";
+import { selectToken, selectRole,selectCheckout } from "../reducers";
 
-function App() {
-  return (
+class App extends React.Component {
+  render() {
+    return (
     <BrowserRouter>
     <React.Fragment>
+    <Navbar />
       <Switch>
       <Route exact path="/" component={Landing}/>
+       {/* TokenLess route */}
+       <Route exact path="/login">
+            {this.props.token ? (this.props.checkout ? <Redirect to="/checkout/123" /> : <Redirect to="/product" /> ) : <Login/>}
+          </Route>
+          <Route exact path="/signup">
+            {this.props.token ? <Redirect to="/product" /> : <Register/>}
+          </Route>
       </Switch>
     </React.Fragment>
     </BrowserRouter>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
+}
 
-export default App;
+const mapStateToProps = (state, ownprops) => ({
+  role: selectRole(state),
+  token: selectToken(state),
+  checkout:selectCheckout(state)
+})
+
+
+export default connect(mapStateToProps)(App);
