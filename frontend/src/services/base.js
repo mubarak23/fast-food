@@ -34,14 +34,13 @@ class BaseService {
             method:method,
             data:body,
             headers: {
-                'apikey':this.APIKEY,
                 'Authorization':`Bearer ${this.token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
         .catch((err) => {
-            if(err.response.status === 401){
+            if(err.response.status === 422){
                 this.token(null)
                 window.location = "/login";
               }

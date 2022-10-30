@@ -7,15 +7,15 @@ class AuthService extends BaseService{
         this.LOGIN_URL = LOGIN_URL;
         this.REGISTER_URL = REGISTER_URL
     }
-    async userLogin(email, password){
+    async login(email, password){
         const requestBody = {email, password}
-        return await this.loadData(this.LOGIN_URL, requestBody, 'POST')
+        return await this.loadData(LOGIN_URL, requestBody, 'POST')
     }
 
-    async userRegister (name, phone, email, password){
+    async register (name, phone, email, password){
             const requestBody = { name, phone, email, password}
             return await this.loadData(this.REGISTER_URL, requestBody, 'POST')
     }
 }
 
-export default AuthService
+export default new AuthService()

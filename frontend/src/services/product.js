@@ -26,8 +26,14 @@ class ProductService extends BaseService {
         reqBody.append("price", price)
         reqBody.append("description", description)
         image && reqBody.append("image", image)
+        const jsonData = {
+            "name": name,
+            "price": price,
+            "description": description,
+            "image": image
+        }
 
-        return this.loadData(this.PRODUCT_URL, reqBody, "POST")
+        return this.loadData(this.PRODUCT_URL, jsonData, "POST")
     }
 
     async editProduct(name, price, description, image, id){
@@ -61,4 +67,4 @@ class ProductService extends BaseService {
     }
 }
 
-export default ProductService
+export default new ProductService()

@@ -10,7 +10,7 @@ require('debug')('server')
 server.use("/api", apiRouter);
 
 
-const port = process.env.PORT || 4045
+const port = process.env.PORT || 5000
 
 server.listen(port, () => {
     console.log(`Server running on ${port}`)

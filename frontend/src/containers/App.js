@@ -7,7 +7,11 @@ import './App.css';
 import React from "react";
 import Navbar from '../components/Navbar';
 import { connect } from "react-redux";
+import Product from '../containers/Product'
+import AddProduct from "../components/Product/add"
+import SingleProduct from "../components/Product"
 import { selectToken, selectRole,selectCheckout } from "../reducers";
+import { ADMIN } from "../constants"
 
 class App extends React.Component {
   render() {
@@ -17,6 +21,11 @@ class App extends React.Component {
     <Navbar />
       <Switch>
       <Route exact path="/" component={Landing}/>
+      <Route exact path="/product" component={Product}/>
+      <Route exact path="/product/add" >
+          {this.props.token && this.props.role === ADMIN ? <AddProduct /> : <Redirect to="/login" />}
+      </Route>
+      <Route exact path="/product/:id" component={SingleProduct}/>
        {/* TokenLess route */}
        <Route exact path="/login">
             {this.props.token ? (this.props.checkout ? <Redirect to="/checkout/123" /> : <Redirect to="/product" /> ) : <Login/>}

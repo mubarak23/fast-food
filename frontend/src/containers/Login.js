@@ -83,14 +83,17 @@ const Login = (props) => {
         ) : ''}
     </div>
   </div>
-        <button disabled={props.loading} className={`w-full mt-3 flex justify-center hover:bg-gray-200 hover:text-gray-900 rounded-md px-3 py-3 uppercase ${ props.loading ? "bg-gray-200  text-black cursor-not-allowed": "bg-gray-900  text-white cursor-pointer"}`}>
-        {props.loading ?  (
-            <>
-            <img src={loader} className="h-6 w-10 px-2 fill-current" alt="loading..."/>
-            loading &nbsp;...
-            </>
-        ):'LOG IN'}
-        </button>
+  
+  <button disabled={props.loading} className={`w-full mt-3 flex justify-center 
+  hover:bg-gray-200 hover:text-gray-900 rounded-md px-3 py-3 uppercase ${ props.loading ? 
+  "bg-gray-200  text-black cursor-not-allowed": "bg-gray-900  text-white cursor-pointer"}`}>
+   {props.loading ?  (
+     <>
+     <img src={loader} className="h-6 w-10 px-2 fill-current" alt="loading..."/>
+     loading &nbsp;...
+     </>
+   ):'LOG IN'}
+  </button>
         </form>
         </div>
         </StyledLogin>

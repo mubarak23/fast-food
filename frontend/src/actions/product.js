@@ -19,7 +19,7 @@ export function getAllProducts(filters, page={}){
     let failMessage = "Refresh the page"
     return async (dispatch) => {
         page.next_page_url ? dispatch(setPageState(true)):dispatch(setLoader(true))
-        let res = await product.getAllProducts(`${filters}${page.next_page_url ? page.next_page_url : ''}`);
+        let res = await product.getProducts(`${filters}${page.next_page_url ? page.next_page_url : ''}`);
         page.next_page_url ? dispatch(setPageState(false)):dispatch(setLoader(false))
         if(!res.data) return productFailed(res, failMessage)(dispatch)
         if(page.next_page_url){
@@ -55,7 +55,7 @@ export function addProduct(name, price, description, image){
     }
 }
 
-export function editproduct(id, name, price, description, image){
+export function editProduct(id, name, price, description, image){
     return async (dispatch) => {
         dispatch(setLoader(true))
         let res = await product.editproduct(name, price, description, id, image)

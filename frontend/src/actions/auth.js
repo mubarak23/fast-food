@@ -11,7 +11,7 @@ let toastrInfoOption = {
 export function userLogin(email, password){
     return async (dispatch, getState) => {
         dispatch(setLoader(true))
-        let res = await auth.userLogin(email, password)
+        let res = await auth.login(email, password)
         dispatch(setLoader(false))
         if(!res.data) return userLoginFailed(res)
         dispatch({
@@ -51,7 +51,7 @@ function registerFailed (res){
 export function register (name, phone, password, email) {
        return async(dispatch) => {
             dispatch(setLoader(true))
-            let res = await auth.userRegister(name, phone, email, password)
+            let res = await auth.register(name, phone, email, password)
             dispatch(setLoader(false))
             if (!res.data) return registerFailed(res)(dispatch);
             dispatch({
