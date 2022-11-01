@@ -39,7 +39,7 @@ function checkComment(comment) {
 
   function checkOrderItems (item, next){
     const len = item.length
-    if (len > 0 && Array.isArray(items)) return true;
+    if (len > 0 && Array.isArray(item)) return true;
     next(
         new CustomException(
           // eslint-disable-next-line new-cap

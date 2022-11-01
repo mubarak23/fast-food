@@ -23,9 +23,9 @@ class myOrderService extends BaseService {
         return this.loadData(this.ORDER_URL, requestBody, "POST")
     }
 
-    async updateOrderStatus(id, status){
-        let requestBody = {mode: status}
-        return this.loadData(this.ORDER_URL, requestBody, "PUT")
+    async updateStatus(id,status) {
+        let requestBody = {mode:status};
+        return await this.loadData(`${this.ORDER_URL}/status/${id}`, requestBody, "PUT");
     }
 
 
@@ -41,4 +41,4 @@ class myOrderService extends BaseService {
 
 }
 
-export default myOrderService
+export default new myOrderService()
