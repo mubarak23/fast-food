@@ -19,3 +19,10 @@ target="_blank">Fast Food,</a> is an online food ordering application .</h4>
 - Admin
   - Add Food Item
   - Analytics for order Data
+
+- Users
+  - Register and SignIn
+  - Place Order
+  - Pay for an order with card
+  - Drop a review of the order 
+  - Rate the order  
